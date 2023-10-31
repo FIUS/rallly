@@ -1,17 +1,14 @@
+"use client";
 import { InfoIcon } from "@rallly/icons";
 import { cn } from "@rallly/ui";
 import { Alert, AlertDescription, AlertTitle } from "@rallly/ui/alert";
 import { Trans } from "next-i18next";
 
-import { getPollLayout } from "@/components/layouts/poll-layout";
 import { LoginLink } from "@/components/login-link";
 import { Poll } from "@/components/poll";
 import { RegisterLink } from "@/components/register-link";
 import { useUser } from "@/components/user-provider";
 import { usePoll } from "@/contexts/poll";
-import { NextPageWithLayout } from "@/types";
-import { isSelfHosted } from "@/utils/constants";
-import { getStaticTranslations } from "@/utils/with-page-translations";
 
 const GuestPollAlert = () => {
   const poll = usePoll();
@@ -49,25 +46,11 @@ const GuestPollAlert = () => {
   );
 };
 
-const Page: NextPageWithLayout = () => {
+export default function Page() {
   return (
     <div className={cn("mx-auto w-full max-w-4xl space-y-3 sm:space-y-4")}>
       <GuestPollAlert />
       <Poll />
     </div>
   );
-};
-
-Page.getLayout = getPollLayout;
-Page.isAuthRequired = isSelfHosted;
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps = getStaticTranslations;
-
-export default Page;
+}

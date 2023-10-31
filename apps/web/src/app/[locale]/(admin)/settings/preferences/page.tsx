@@ -1,7 +1,7 @@
+"use client";
 import Head from "next/head";
-import { useTranslation } from "next-i18next";
 
-import { getProfileLayout } from "@/components/layouts/profile-layout";
+import { useTranslation } from "@/app/i18n/client";
 import { DateTimePreferences } from "@/components/settings/date-time-preferences";
 import { LanguagePreference } from "@/components/settings/language-preference";
 import {
@@ -12,10 +12,7 @@ import {
 } from "@/components/settings/settings";
 import { Trans } from "@/components/trans";
 
-import { NextPageWithLayout } from "../../types";
-import { getStaticTranslations } from "../../utils/with-page-translations";
-
-const Page: NextPageWithLayout = () => {
+const Page = () => {
   const { t } = useTranslation();
 
   return (
@@ -53,9 +50,5 @@ const Page: NextPageWithLayout = () => {
     </Settings>
   );
 };
-
-Page.getLayout = getProfileLayout;
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

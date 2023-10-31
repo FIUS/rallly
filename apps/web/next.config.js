@@ -10,7 +10,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 });
 
 const nextConfig = {
-  i18n: { ...i18n, localeDetection: false },
   productionBrowserSourceMaps: true,
   output: "standalone",
   transpilePackages: [
@@ -22,7 +21,6 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
 

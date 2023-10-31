@@ -1,7 +1,7 @@
+"use client";
 import Head from "next/head";
 import { useTranslation } from "next-i18next";
 
-import { getProfileLayout } from "@/components/layouts/profile-layout";
 import { ProfileSettings } from "@/components/settings/profile-settings";
 import {
   Settings,
@@ -11,10 +11,7 @@ import {
 import { Trans } from "@/components/trans";
 import { useUser } from "@/components/user-provider";
 
-import { NextPageWithLayout } from "../../types";
-import { getStaticTranslations } from "../../utils/with-page-translations";
-
-const Page: NextPageWithLayout = () => {
+const Page = () => {
   const { t } = useTranslation();
   const { user } = useUser();
 
@@ -69,10 +66,5 @@ const Page: NextPageWithLayout = () => {
     </Settings>
   );
 };
-
-Page.getLayout = getProfileLayout;
-Page.isAuthRequired = true;
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

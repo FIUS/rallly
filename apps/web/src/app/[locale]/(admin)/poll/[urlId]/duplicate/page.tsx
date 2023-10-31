@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@rallly/ui/button";
 import {
@@ -17,18 +18,16 @@ import {
 } from "@rallly/ui/form";
 import { Input } from "@rallly/ui/input";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { getPollLayout } from "@/components/layouts/poll-layout";
 import { PayWall } from "@/components/pay-wall";
 import { usePoll } from "@/components/poll-context";
 import { Trans } from "@/components/trans";
 import { NextPageWithLayout } from "@/types";
 import { usePostHog } from "@/utils/posthog";
 import { trpc } from "@/utils/trpc/client";
-import { getStaticTranslations } from "@/utils/with-page-translations";
 
 const formSchema = z.object({
   title: z.string().trim().min(1),
@@ -63,7 +62,7 @@ const Page: NextPageWithLayout = () => {
                     pollId: poll.id,
                     newPollId: res.id,
                   });
-                  await router.push(`/poll/${res.id}`);
+                  router.push(`/poll/${res.id}`);
                 },
               },
             );
@@ -123,16 +122,5 @@ const Page: NextPageWithLayout = () => {
     </PayWall>
   );
 };
-
-Page.getLayout = getPollLayout;
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

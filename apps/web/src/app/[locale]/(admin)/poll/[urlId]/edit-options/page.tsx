@@ -1,22 +1,20 @@
+"use client";
 import { Button } from "@rallly/ui/button";
 import { CardFooter } from "@rallly/ui/card";
 import { Form } from "@rallly/ui/form";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import { useForm } from "react-hook-form";
 
 import { PollOptionsData } from "@/components/forms";
 import PollOptionsForm from "@/components/forms/poll-options-form";
-import { getPollLayout } from "@/components/layouts/poll-layout";
 import { useModalContext } from "@/components/modal/modal-provider";
 import { useUpdatePollMutation } from "@/components/poll/mutations";
 import { usePoll } from "@/components/poll-context";
 import { Trans } from "@/components/trans";
-import { NextPageWithLayout } from "@/types";
 import { encodeDateOption } from "@/utils/date-time-utils";
-import { getStaticTranslations } from "@/utils/with-page-translations";
 
 const convertOptionToString = (option: { start: Date; duration: number }) => {
   const start = dayjs(option.start).utc();
@@ -27,7 +25,7 @@ const convertOptionToString = (option: { start: Date; duration: number }) => {
         .format("YYYY-MM-DDTHH:mm:ss")}`;
 };
 
-const Page: NextPageWithLayout = () => {
+const Page = () => {
   const { poll, getParticipantsWhoVotedForOption } = usePoll();
   const { mutate: updatePollMutation, isLoading: isUpdating } =
     useUpdatePollMutation();
@@ -135,16 +133,5 @@ const Page: NextPageWithLayout = () => {
     </Form>
   );
 };
-
-Page.getLayout = getPollLayout;
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [], //indicates that no page needs be created at build time
-    fallback: "blocking", //indicates the type of fallback
-  };
-};
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

@@ -20,7 +20,7 @@ import {
 } from "@rallly/ui/dropdown-menu";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams, usePathname } from "next/navigation";
 import React from "react";
 
 import { Container } from "@/components/container";
@@ -155,12 +155,12 @@ const StatusControl = () => {
 const AdminControls = () => {
   const poll = usePoll();
   const pollLink = `/poll/${poll.id}`;
-  const router = useRouter();
+  const pathname = usePathname();
   return (
     <TopBar>
       <div className="flex flex-col items-start justify-between gap-x-4 gap-y-2 sm:flex-row">
         <div className="flex min-w-0 gap-4">
-          {router.asPath !== pollLink ? (
+          {pathname !== pollLink ? (
             <Button asChild>
               <Link href={pollLink}>
                 <ArrowLeftIcon className="h-4 w-4" />
@@ -257,9 +257,9 @@ const Title = () => {
 };
 
 const Prefetch = ({ children }: React.PropsWithChildren) => {
-  const router = useRouter();
+  const params = useParams();
 
-  const urlId = router.query.urlId as string;
+  const urlId = params?.urlId as string;
 
   const poll = trpc.polls.get.useQuery({ urlId });
   const participants = trpc.polls.participants.list.useQuery({ pollId: urlId });
@@ -287,10 +287,10 @@ const Prefetch = ({ children }: React.PropsWithChildren) => {
   return <>{children}</>;
 };
 
-const PollLayout = ({ children }: React.PropsWithChildren) => {
-  const router = useRouter();
+export const PollLayout = ({ children }: React.PropsWithChildren) => {
+  const params = useParams();
 
-  const urlId = router.query.urlId as string;
+  const urlId = params?.urlId as string;
 
   if (!urlId) {
     // probably navigating away

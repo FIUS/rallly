@@ -19,10 +19,10 @@ import {
   DropdownMenuTrigger,
 } from "@rallly/ui/dropdown-menu";
 import Link from "next/link";
-import { Trans } from "next-i18next";
 import * as React from "react";
 
 import { ProBadge } from "@/components/pro-badge";
+import { Trans } from "@/components/trans";
 import { usePoll } from "@/contexts/poll";
 
 import { DeletePollDialog } from "./manage-poll/delete-poll-dialog";

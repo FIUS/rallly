@@ -1,10 +1,9 @@
-import { prisma } from "@rallly/database";
+"use client";
 import { ArrowUpLeftIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
-import { GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams, useSearchParams } from "next/navigation";
 import { useTranslation } from "next-i18next";
 import { NextSeo } from "next-seo";
 import React from "react";
@@ -19,18 +18,16 @@ import { PermissionsContext } from "@/contexts/permissions";
 import { usePoll } from "@/contexts/poll";
 import { absoluteUrl } from "@/utils/absolute-url";
 import { trpc } from "@/utils/trpc/client";
-import { getStaticTranslations } from "@/utils/with-page-translations";
-
-import Error404 from "../404";
 
 const Prefetch = ({ children }: React.PropsWithChildren) => {
-  const router = useRouter();
-  const [urlId] = React.useState(router.query.urlId as string);
-
+  const searchParams = useSearchParams();
+  const token = searchParams?.get("token") as string;
+  const params = useParams<{ urlId: string }>();
+  const urlId = params?.urlId as string;
   const { data: permission } = trpc.auth.getUserPermission.useQuery(
-    { token: router.query.token as string },
+    { token },
     {
-      enabled: !!router.query.token,
+      enabled: !!token,
     },
   );
 
@@ -46,7 +43,7 @@ const Prefetch = ({ children }: React.PropsWithChildren) => {
   });
 
   if (error?.data?.code === "NOT_FOUND") {
-    return <Error404 />;
+    return <div>Not found</div>;
   }
   if (!poll || !participants) {
     return null;
@@ -171,51 +168,6 @@ const Page = ({ id, title, user }: PageProps) => {
       </Prefetch>
     </>
   );
-};
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [], // indicates that no page needs be created at build time
-    fallback: "blocking", // indicates the type of fallback
-  };
-};
-
-export const getStaticProps: GetStaticProps = async (ctx) => {
-  // We get these props to be able to render the og:image
-  const poll = await prisma.poll.findUnique({
-    where: {
-      id: ctx.params?.urlId as string,
-    },
-    select: {
-      id: true,
-      title: true,
-      user: {
-        select: {
-          name: true,
-        },
-      },
-    },
-  });
-
-  if (!poll) {
-    return { props: {}, notFound: 404 };
-  }
-
-  const res = await getStaticTranslations(ctx);
-
-  if ("props" in res) {
-    return {
-      props: {
-        ...res.props,
-        id: poll.id,
-        title: poll.title,
-        user: poll.user?.name ?? null,
-      },
-      revalidate: 10,
-    };
-  }
-
-  return res;
 };
 
 export default Page;

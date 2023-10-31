@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@rallly/ui/button";
 import {
   Card,
@@ -9,19 +10,17 @@ import {
 } from "@rallly/ui/card";
 import { Form } from "@rallly/ui/form";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import {
   PollDetailsData,
   PollDetailsForm,
 } from "@/components/forms/poll-details-form";
-import { getPollLayout } from "@/components/layouts/poll-layout";
 import { useUpdatePollMutation } from "@/components/poll/mutations";
 import { usePoll } from "@/components/poll-context";
 import { Trans } from "@/components/trans";
 import { NextPageWithLayout } from "@/types";
-import { getStaticTranslations } from "@/utils/with-page-translations";
 
 const Page: NextPageWithLayout = () => {
   const { poll } = usePoll();
@@ -86,16 +85,5 @@ const Page: NextPageWithLayout = () => {
     </Form>
   );
 };
-
-Page.getLayout = getPollLayout;
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

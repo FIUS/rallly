@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@rallly/ui/button";
 import {
   CardContent,
@@ -6,10 +7,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@rallly/ui/card";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 import { Card } from "@/components/card";
-import { getPollLayout } from "@/components/layouts/poll-layout";
 import { PayWall } from "@/components/pay-wall";
 import { FinalizePollForm } from "@/components/poll/manage-poll/finalize-poll-dialog";
 import { Trans } from "@/components/trans";
@@ -18,7 +18,6 @@ import { usePoll } from "@/contexts/poll";
 import { NextPageWithLayout } from "@/types";
 import { usePostHog } from "@/utils/posthog";
 import { trpc } from "@/utils/trpc/client";
-import { getStaticTranslations } from "@/utils/with-page-translations";
 
 const FinalizationForm = () => {
   const plan = usePlan();
@@ -93,16 +92,5 @@ const Page: NextPageWithLayout = () => {
     </PayWall>
   );
 };
-
-Page.getLayout = getPollLayout;
-
-export const getStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: "blocking",
-  };
-};
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;

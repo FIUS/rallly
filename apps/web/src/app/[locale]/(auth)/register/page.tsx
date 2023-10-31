@@ -1,7 +1,8 @@
+"use client";
 import { Button } from "@rallly/ui/button";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useParams, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { Trans, useTranslation } from "next-i18next";
 import { usePostHog } from "posthog-js/react";
@@ -9,28 +10,24 @@ import React from "react";
 import { useForm } from "react-hook-form";
 
 import { useDefaultEmail, VerifyCode } from "@/components/auth/auth-forms";
-import { StandardLayout } from "@/components/layouts/standard-layout";
 import { TextInput } from "@/components/text-input";
-import { NextPageWithLayout } from "@/types";
 import { useDayjs } from "@/utils/dayjs";
 import { requiredString, validEmail } from "@/utils/form-validation";
 import { trpc } from "@/utils/trpc/client";
-
-import { AuthLayout } from "../components/auth/auth-layout";
-import { getStaticTranslations } from "../utils/with-page-translations";
 
 type RegisterFormData = {
   name: string;
   email: string;
 };
 
-export const RegisterForm: React.FunctionComponent<{
+const RegisterForm: React.FunctionComponent<{
   onClickLogin?: React.MouseEventHandler;
 }> = ({ onClickLogin }) => {
   const [defaultEmail, setDefaultEmail] = useDefaultEmail();
   const { t } = useTranslation();
   const { timeZone } = useDayjs();
-  const router = useRouter();
+  const params = useParams<{ locale: string }>();
+  const searchParams = useSearchParams();
   const { register, handleSubmit, getValues, setError, formState } =
     useForm<RegisterFormData>({
       defaultValues: { email: defaultEmail },
@@ -47,7 +44,7 @@ export const RegisterForm: React.FunctionComponent<{
       <VerifyCode
         onSubmit={async (code) => {
           // get user's time zone
-          const locale = router.locale;
+          const locale = params?.locale ?? "en";
           const res = await authenticateRegistration.mutateAsync({
             token,
             timeZone,
@@ -72,7 +69,7 @@ export const RegisterForm: React.FunctionComponent<{
 
           signIn("registration-token", {
             token,
-            callbackUrl: router.query.callbackUrl as string,
+            callbackUrl: searchParams?.get("callbackUrl") ?? undefined,
           });
         }}
         onChange={() => setToken(undefined)}
@@ -182,23 +179,17 @@ export const RegisterForm: React.FunctionComponent<{
   );
 };
 
-const Page: NextPageWithLayout = () => {
+const Page = () => {
   const { t } = useTranslation();
 
   return (
-    <AuthLayout>
+    <>
       <Head>
         <title>{t("register")}</title>
       </Head>
       <RegisterForm />
-    </AuthLayout>
+    </>
   );
 };
-
-Page.getLayout = (page) => {
-  return <StandardLayout hideNav={true}>{page}</StandardLayout>;
-};
-
-export const getStaticProps = getStaticTranslations;
 
 export default Page;
