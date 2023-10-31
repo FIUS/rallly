@@ -1,34 +1,19 @@
+"use client";
 import { Button } from "@rallly/ui/button";
 import { useMutation } from "@tanstack/react-query";
-import { GetServerSideProps } from "next";
-import Head from "next/head";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
-import { z } from "zod";
 
-import { StandardLayout } from "@/components/layouts/standard-layout";
 import { Logo } from "@/components/logo";
 import { Skeleton } from "@/components/skeleton";
 import { Trans } from "@/components/trans";
 import { UserAvatar } from "@/components/user";
-import { NextPageWithLayout } from "@/types";
 import { usePostHog } from "@/utils/posthog";
 import { trpc } from "@/utils/trpc/client";
-import { getServerSideTranslations } from "@/utils/with-page-translations";
-
-const params = z.object({
-  magicLink: z.string().url(),
-});
-
-const magicLinkParams = z.object({
-  email: z.string().email(),
-  token: z.string(),
-});
 
 type PageProps = { magicLink: string; email: string };
 
-const Page: NextPageWithLayout<PageProps> = ({ magicLink, email }) => {
+export const LoginPage = ({ magicLink, email }: PageProps) => {
   const session = useSession();
   const posthog = usePostHog();
   const trpcUtils = trpc.useUtils();
@@ -61,12 +46,8 @@ const Page: NextPageWithLayout<PageProps> = ({ magicLink, email }) => {
   });
   const { data } = trpc.user.getByEmail.useQuery({ email });
   const router = useRouter();
-  const { t } = useTranslation();
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4 p-4">
-      <Head>
-        <title>{t("login")}</title>
-      </Head>
       <div className="mb-6">
         <Logo />
       </div>
@@ -105,43 +86,3 @@ const Page: NextPageWithLayout<PageProps> = ({ magicLink, email }) => {
     </div>
   );
 };
-
-Page.getLayout = (page) => (
-  <StandardLayout hideNav={true}>{page}</StandardLayout>
-);
-
-export const getServerSideProps: GetServerSideProps<PageProps> = async (
-  ctx,
-) => {
-  const parse = params.safeParse(ctx.query);
-
-  if (!parse.success) {
-    return {
-      notFound: true,
-    };
-  }
-
-  const { magicLink } = parse.data;
-
-  const url = new URL(magicLink);
-
-  const parseMagicLink = magicLinkParams.safeParse(
-    Object.fromEntries(url.searchParams),
-  );
-
-  if (!parseMagicLink.success) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return {
-    props: {
-      magicLink,
-      email: parseMagicLink.data.email,
-      ...(await getServerSideTranslations(ctx)),
-    },
-  };
-};
-
-export default Page;

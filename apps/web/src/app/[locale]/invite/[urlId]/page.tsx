@@ -4,8 +4,6 @@ import { Button } from "@rallly/ui/button";
 import Head from "next/head";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
-import { useTranslation } from "next-i18next";
-import { NextSeo } from "next-seo";
 import React from "react";
 
 import { Poll } from "@/components/poll";
@@ -16,7 +14,6 @@ import { useUser } from "@/components/user-provider";
 import { VisibilityProvider } from "@/components/visibility";
 import { PermissionsContext } from "@/contexts/permissions";
 import { usePoll } from "@/contexts/poll";
-import { absoluteUrl } from "@/utils/absolute-url";
 import { trpc } from "@/utils/trpc/client";
 
 const Prefetch = ({ children }: React.PropsWithChildren) => {
@@ -84,65 +81,34 @@ const GoToApp = () => {
   );
 };
 
-type PageProps = {
-  id: string;
-  title: string;
-  user: string | null;
-};
-
-const Page = ({ id, title, user }: PageProps) => {
-  const { t } = useTranslation();
-  const name = user || t("guest");
+export default function InvitePage() {
   return (
-    <>
-      <NextSeo
-        openGraph={{
-          title,
-          description: `By ${name}`,
-          url: absoluteUrl(`/invite/${id}`),
-          images: [
-            {
-              url: `${absoluteUrl("/api/og-image-poll", {
-                title,
-                author: name,
-              })}`,
-              width: 1200,
-              height: 630,
-              alt: title,
-              type: "image/png",
-            },
-          ],
-        }}
-      />
-      <Prefetch>
-        <LegacyPollContextProvider>
-          <VisibilityProvider>
-            <GoToApp />
-            <div className="mx-auto max-w-4xl space-y-4 px-3 sm:py-8">
-              <Poll />
-              <div className="mt-4 space-y-4 text-center text-gray-500">
-                <div className="py-8">
-                  <Trans
-                    defaults="Powered by <a>{name}</a>"
-                    i18nKey="poweredByRallly"
-                    values={{ name: "rallly.co" }}
-                    components={{
-                      a: (
-                        <Link
-                          className="hover:text-primary-600 rounded-none border-b border-b-gray-500 font-semibold"
-                          href="https://rallly.co"
-                        />
-                      ),
-                    }}
-                  />
-                </div>
+    <Prefetch>
+      <LegacyPollContextProvider>
+        <VisibilityProvider>
+          <GoToApp />
+          <div className="mx-auto max-w-4xl space-y-4 px-3 sm:py-8">
+            <Poll />
+            <div className="mt-4 space-y-4 text-center text-gray-500">
+              <div className="py-8">
+                <Trans
+                  defaults="Powered by <a>{name}</a>"
+                  i18nKey="poweredByRallly"
+                  values={{ name: "rallly.co" }}
+                  components={{
+                    a: (
+                      <Link
+                        className="hover:text-primary-600 rounded-none border-b border-b-gray-500 font-semibold"
+                        href="https://rallly.co"
+                      />
+                    ),
+                  }}
+                />
               </div>
             </div>
-          </VisibilityProvider>
-        </LegacyPollContextProvider>
-      </Prefetch>
-    </>
+          </div>
+        </VisibilityProvider>
+      </LegacyPollContextProvider>
+    </Prefetch>
   );
-};
-
-export default Page;
+}

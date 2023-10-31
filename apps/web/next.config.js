@@ -4,7 +4,6 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 const { withSentryConfig } = require("@sentry/nextjs");
-const i18n = require("./i18n.config.js");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
@@ -25,9 +24,6 @@ const nextConfig = {
     });
 
     return config;
-  },
-  typescript: {
-    ignoreBuildErrors: true,
   },
   async redirects() {
     return [

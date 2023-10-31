@@ -38,7 +38,11 @@ export const UserDropdown = () => {
   const { user } = useUser();
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger data-testid="user-dropdown" asChild className="group">
+      <DropdownMenuTrigger
+        data-testid="user-dropdown"
+        asChild
+        className="group"
+      >
         <Button variant="ghost" className="rounded-full">
           <CurrentUserAvatar size="sm" className="-ml-1" />
           <ChevronDown className="h-4 w-4" />

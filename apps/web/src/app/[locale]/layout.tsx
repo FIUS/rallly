@@ -1,7 +1,7 @@
-"use client";
 import "tailwindcss/tailwind.css";
 import "../../style.css";
 
+import languages from "@rallly/languages";
 import { Inter } from "next/font/google";
 import React from "react";
 
@@ -11,6 +11,10 @@ const inter = Inter({
   subsets: ["latin"],
   display: "swap",
 });
+
+export async function generateStaticParams() {
+  return Object.keys(languages).map((locale) => ({ locale }));
+}
 
 export default function Root({
   children,
