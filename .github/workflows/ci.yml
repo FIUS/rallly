@@ -34,4 +34,4 @@ jobs:
           file: apps/web/Dockerfile
 #          context: ./apps/web
           platforms: linux/amd64,linux/arm/v8
-          
+          build-args: SELF_HOSTED=true
