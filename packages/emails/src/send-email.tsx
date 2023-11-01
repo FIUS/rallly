@@ -77,11 +77,6 @@ export class EmailClient {
     templateName: T,
     options: SendEmailOptions<T>,
   ) {
-    if (!process.env.SUPPORT_EMAIL) {
-      console.info("SUPPORT_EMAIL not configured - skipping email send");
-      return;
-    }
-
     const Template = templates[templateName] as TemplateComponent<T>;
     const html = render(
       <EmailContext.Provider value={this.config.context}>
@@ -111,6 +106,11 @@ export class EmailClient {
       previewEmail(options, {
         openSimulator: false,
       });
+    }
+
+    if (!process.env.SUPPORT_EMAIL) {
+      console.info("ℹ SUPPORT_EMAIL not configured - skipping email send");
+      return;
     }
 
     try {

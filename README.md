@@ -24,38 +24,42 @@ Built with [Next.js](https://github.com/vercel/next.js/), [Prisma](https://githu
 
 Check out the [self-hosting docs](https://support.rallly.co/self-hosting) for more information on running your own instance of Rallly.
 
-## Development
+## Setup
 
-Clone this repo and change directory to the root of the repository.
+1. Clone the repository switch to the project directory
 
-```bash
-git clone https://github.com/lukevella/rallly.git
-cd rallly
-```
+   ```bash
+   git clone https://github.com/lukevella/rallly.git
+   cd rallly
+   ```
 
-Install dependencies
+2. Install dependencies
 
-```
-yarn
-```
+   ```
+   yarn
+   ```
 
-Copy the sample `.env` file then open it and set the required [configuration options](https://support.rallly.co/self-hosting/configuration-options).
+3. Setup database (requires [Docker](https://docs.docker.com/get-docker/))
 
-```bash
-cp sample.env .env
-```
+   ```
+   yarn dx
+   ```
 
-Next, run the following command:
+   This will:
 
-```
-yarn db:generate && yarn db:reset
-```
+   - spin up a postgres database using docker on port 5450
+   - run migrations to create the database schema
+   - seed the database with test users and random data
 
-This will:
+   If you want to use a different database, you can set the `DATABASE_URL` environment variable to your database connection string and run `yarn db:setup` to run the migrations and seed the database.
 
-- generate the prisma database client
-- run migrations to create the database schema
-- seed the database with some random data
+4. Setup environment variables
+
+   Copy the sample `.env` file then open it and set the required [configuration options](https://support.rallly.co/self-hosting/configuration-options).
+
+   ```bash
+   cp sample.env .env
+   ```
 
 Start the Next.js server
 

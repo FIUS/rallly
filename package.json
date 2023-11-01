@@ -3,8 +3,8 @@
   "private": true,
   "version": "3.2.0",
   "scripts": {
-    "dev:app": "dotenv -- turbo dev --filter=@rallly/web...",
-    "dev": "dotenv -- turbo dev",
+    "dev": "dotenv -c development -- turbo dev --filter=@rallly/web",
+    "dev:emails": "turbo dev --filter=@rallly/emails",
     "start": "turbo run start --filter=@rallly/web...",
     "build": "turbo run build --filter=@rallly/web...",
     "docs:dev": "turbo dev --filter=@rallly/docs...",
@@ -12,6 +12,11 @@
     "db:generate": "turbo db:generate",
     "db:migrate": "prisma migrate dev",
     "db:reset": "prisma migrate reset",
+    "db:up": "docker compose up -d rallly_db",
+    "db:seed": "yarn workspace @rallly/database db:seed",
+    "db:down": "docker compose down --volumes --remove-orphans rallly_db",
+    "db:setup": "run-s db:up db:deploy db:seed",
+    "dx": "yarn db:setup",
     "test": "yarn workspace @rallly/web test",
     "lint": "turbo lint",
     "i18n:scan": "turbo i18n:scan",
@@ -26,6 +31,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@sentry/nextjs": "^7.77.0",
     "framer-motion": "^10.16.4",
     "next": "^14.0.1",
     "react": "^18.2.0",
@@ -39,6 +45,7 @@
     "dotenv-cli": "^7.1.0",
     "eslint": "^8.48.0",
     "eslint-config-next": "^14.0.1",
+    "npm-run-all": "^4.1.5",
     "prettier": "^2.8.4",
     "turbo": "^1.10.7"
   },

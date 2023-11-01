@@ -143,11 +143,11 @@ async function main() {
     },
   });
 
-  [freeUser.id, proUser.id, proUserLegacy.id].forEach(async (userId) => {
-    await createPollsForUser(userId);
+  console.info("Creating Dev Users\n");
+  [freeUser, proUser, proUserLegacy].forEach(async (user) => {
+    await createPollsForUser(user.id);
+    console.info(`✓ Added ${user.email}`);
   });
-
-  console.info(`Seeded data`);
 }
 
 main()

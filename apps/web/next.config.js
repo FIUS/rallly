@@ -55,6 +55,7 @@ const sentryWebpackPluginOptions = {
   // recommended:
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   dryRun: !process.env.SENTRY_AUTH_TOKEN,
   silent: true, // Suppresses all logs
   // For all available options, see:
