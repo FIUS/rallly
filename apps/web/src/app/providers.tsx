@@ -10,7 +10,7 @@ import { useState } from "react";
 import { I18nProvider } from "@/app/i18n/client";
 import { UserProvider } from "@/components/user-provider";
 import { ConnectedDayjsProvider } from "@/utils/dayjs";
-import { trpcConfig } from "@/utils/trpc/client";
+import { trpcConfig } from "@/utils/trpc/config";
 
 export const trpc = createTRPCReact<AppRouter>({
   unstable_overrides: {
