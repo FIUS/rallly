@@ -1,86 +1,37 @@
-name: CI
+name: Try to build for ARM and X86
+
+# Controls when the workflow will run
 on:
-  push:
-    branches:
-      - main
   pull_request:
-    branches:
-      - main
+    types: [opened, synchronize, reopened]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  linting:
-    name: Linting
+  docker:
     runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Setup node
-        uses: actions/setup-node@v3
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Checkout
+        uses: actions/checkout@v2
         with:
-          node-version: 18
-          cache: yarn
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Check linting rules
-        run: yarn lint
-
-      - name: Check types
-        run: yarn lint:tsc
-
-  # Label of the container job
-  integration-tests:
-    name: Run tests
-    # Containers must run in Linux based operating systems
-    runs-on: ubuntu-latest
-    env:
-      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
-      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
-    steps:
-      # Downloads a copy of the code in your repository before running CI tests
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-
-      - name: Setup node
-        uses: actions/setup-node@v3
+          ref: tags/v3.1.1  
+      -
+       name: Set up QEMU
+       uses: docker/setup-qemu-action@v1
+      -
+        name: Build and push frontend
+        id: docker_build_frontend
+        uses: docker/build-push-action@v2
         with:
-          node-version: 18
-          cache: yarn
-
-      - name: Set environment variables
-        run: |
-          echo "DATABASE_URL=postgresql://postgres:password@localhost:5432/rallly" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run db
-        run: |
-          docker pull postgres:14.2
-          docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_DB=rallly postgres:14.2
-          yarn wait-on --timeout 60000 tcp:localhost:5432
-
-      - name: Deploy migrations
-        run: yarn db:deploy
-
-      - name: Install playwright dependencies
-        run: yarn playwright install --with-deps chromium
-
-      - name: Run tests
-        run: yarn test
-
-      - name: Upload artifact playwright-report
-        if: ${{ success() || failure() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: ./apps/web/playwright-report
+          push: false
+          tags: fius/rallly_arm:dev
+          file: apps/web/Dockerfile
+          context: ./apps/web
+          platforms: linux/amd64,linux/arm/v7
+          
