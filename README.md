@@ -24,7 +24,7 @@ Built with [Next.js](https://github.com/vercel/next.js/), [Prisma](https://githu
 
 Check out the [self-hosting docs](https://support.rallly.co/self-hosting) for more information on running your own instance of Rallly.
 
-## Setup
+## Get started
 
 1. Clone the repository switch to the project directory
 
@@ -39,34 +39,38 @@ Check out the [self-hosting docs](https://support.rallly.co/self-hosting) for mo
    yarn
    ```
 
-3. Setup database (requires [Docker](https://docs.docker.com/get-docker/))
-
-   ```
-   yarn dx
-   ```
-
-   This will:
-
-   - spin up a postgres database using docker on port 5450
-   - run migrations to create the database schema
-   - seed the database with test users and random data
-
-   If you want to use a different database, you can set the `DATABASE_URL` environment variable to your database connection string and run `yarn db:setup` to run the migrations and seed the database.
-
-4. Setup environment variables
-
-   Copy the sample `.env` file then open it and set the required [configuration options](https://support.rallly.co/self-hosting/configuration-options).
+3. Setup environment variables
 
    ```bash
    cp sample.env .env
    ```
 
-Start the Next.js server
+   Create a `.env` file by copying `sample.env` then open it and set the required [configuration options](https://support.rallly.co/self-hosting/configuration-options).
 
-```
-# For development
-yarn dev
-```
+4. Setup the database
+
+   If you don't have a postgres database running locally, you can spin up a new database using docker by running:
+
+   ```
+   yarn dx
+   ```
+
+   If you already have a postgres database, you can run the migrations and seed the database by running:
+
+   ```
+   yarn db:setup
+   ```
+
+   This will:
+
+   - run migrations to create the database schema
+   - seed the database with test users and random data
+
+5. Start the Next.js server
+
+   ```
+   yarn dev
+   ```
 
 ## Contributors
 
