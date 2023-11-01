@@ -1,8 +1,8 @@
-import { ListIcon, SparklesIcon } from "@rallly/icons";
 import { cn } from "@rallly/ui";
 import { Button } from "@rallly/ui/button";
 import clsx from "clsx";
 import { AnimatePresence, m } from "framer-motion";
+import { ListIcon, SparklesIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";

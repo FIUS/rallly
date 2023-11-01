@@ -1,5 +1,5 @@
-import { XCircleIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
+import { XCircleIcon } from "lucide-react";
 import Link from "next/link";
 
 import { getTranslation } from "@/app/i18n";

@@ -1,7 +1,7 @@
 "use client";
-import { InfoIcon } from "@rallly/icons";
 import { cn } from "@rallly/ui";
 import { Alert, AlertDescription, AlertTitle } from "@rallly/ui/alert";
+import { InfoIcon } from "lucide-react";
 import { Trans } from "next-i18next";
 
 import { LoginLink } from "@/components/login-link";

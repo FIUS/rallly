@@ -1,3 +1,12 @@
+import { Button } from "@rallly/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@rallly/ui/dropdown-menu";
 import {
   ChevronDown,
   CreditCardIcon,
@@ -11,16 +20,7 @@ import {
   Settings2Icon,
   UserIcon,
   UserPlusIcon,
-} from "@rallly/icons";
-import { Button } from "@rallly/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@rallly/ui/dropdown-menu";
+} from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 

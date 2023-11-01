@@ -1,13 +1,13 @@
+import { cn } from "@rallly/ui";
+import { Button } from "@rallly/ui/button";
+import { Card } from "@rallly/ui/card";
+import clsx from "clsx";
 import {
   CreditCardIcon,
   MenuIcon,
   Settings2Icon,
   UserIcon,
-} from "@rallly/icons";
-import { cn } from "@rallly/ui";
-import { Button } from "@rallly/ui/button";
-import { Card } from "@rallly/ui/card";
-import clsx from "clsx";
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";

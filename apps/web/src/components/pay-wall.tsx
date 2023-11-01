@@ -1,3 +1,8 @@
+import { cn } from "@rallly/ui";
+import { Badge } from "@rallly/ui/badge";
+import { Button } from "@rallly/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rallly/ui/tabs";
+import { m } from "framer-motion";
 import {
   CalendarCheck2Icon,
   CopyIcon,
@@ -7,12 +12,7 @@ import {
   LockIcon,
   Settings2Icon,
   TrendingUpIcon,
-} from "@rallly/icons";
-import { cn } from "@rallly/ui";
-import { Badge } from "@rallly/ui/badge";
-import { Button } from "@rallly/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@rallly/ui/tabs";
-import { m } from "framer-motion";
+} from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React from "react";

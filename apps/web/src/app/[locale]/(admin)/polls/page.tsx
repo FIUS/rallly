@@ -1,13 +1,13 @@
 "use client";
+import { Button } from "@rallly/ui/button";
+import dayjs from "dayjs";
 import {
   InboxIcon,
   PauseCircleIcon,
   PlusIcon,
   RadioIcon,
   VoteIcon,
-} from "@rallly/icons";
-import { Button } from "@rallly/ui/button";
-import dayjs from "dayjs";
+} from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";

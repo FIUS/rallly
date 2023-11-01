@@ -1,4 +1,12 @@
 "use client";
+import { Button } from "@rallly/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuItemIconLabel,
+  DropdownMenuTrigger,
+} from "@rallly/ui/dropdown-menu";
 import {
   ArrowLeftIcon,
   ArrowUpRight,
@@ -10,15 +18,7 @@ import {
   PlayCircleIcon,
   RotateCcw,
   ShieldCloseIcon,
-} from "@rallly/icons";
-import { Button } from "@rallly/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuItemIconLabel,
-  DropdownMenuTrigger,
-} from "@rallly/ui/dropdown-menu";
+} from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";

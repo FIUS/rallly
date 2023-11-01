@@ -1,6 +1,6 @@
-import { ArrowUpRight } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
 import { Form, FormField, FormItem, FormLabel } from "@rallly/ui/form";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";

@@ -1,9 +1,9 @@
 "use client";
-import { ArrowUpRight, CreditCardIcon, SendIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
 import { Card } from "@rallly/ui/card";
 import { Label } from "@rallly/ui/label";
 import dayjs from "dayjs";
+import { ArrowUpRight, CreditCardIcon, SendIcon } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import Script from "next/script";

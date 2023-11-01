@@ -1,5 +1,5 @@
-import { XIcon } from "@rallly/icons";
 import dayjs from "dayjs";
+import { XIcon } from "lucide-react";
 import React from "react";
 import { Calendar } from "react-big-calendar";
 import { createBreakpoint } from "react-use";

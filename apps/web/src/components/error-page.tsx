@@ -1,5 +1,5 @@
-import { FrownIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
+import { FrownIcon } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useTranslation } from "next-i18next";

@@ -1,6 +1,6 @@
 "use client";
-import { ArrowUpLeftIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
+import { ArrowUpLeftIcon } from "lucide-react";
 import Head from "next/head";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
