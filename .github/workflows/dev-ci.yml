@@ -31,8 +31,8 @@ jobs:
         with:
           push: true
           tags: |
-            fius/rallly_arm:dev
-            fius/rallly_arm:v3.2.1
+            fius/rallly:dev
+            fius/rallly:v3.2.1
           file: apps/web/Dockerfile
 #          context: ./apps/web
           platforms: linux/amd64,linux/arm64/v8
