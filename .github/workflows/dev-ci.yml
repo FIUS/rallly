@@ -1,4 +1,4 @@
-name: Try to build for ARM and X86
+name: Dev-Version of Builds (maybe) not working
 
 # Controls when the workflow will run
 on:

@@ -1,4 +1,4 @@
-name: Try to build for ARM and X86
+name: Building Version 3.1.1 form ARM and x86
 
 # Controls when the workflow will run
 on:
