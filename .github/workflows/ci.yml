@@ -1,4 +1,4 @@
-name: Building Version 3.1.1 form ARM and x86
+name: Building Version 3.2.1 for ARM and x86
 
 # Controls when the workflow will run
 on:
@@ -26,7 +26,7 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: v3.1.1  
+          ref: v3.2.1  
       -
        name: Set up QEMU
        uses: docker/setup-qemu-action@v1
@@ -36,7 +36,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: false
-          tags: fius/rallly:dev
+          tags: |
+            fius/rallly:latest
+            fius/rallly:v3.2.1
           file: apps/web/Dockerfile
 #          context: ./apps/web
           platforms: linux/amd64,linux/arm64/v8
