@@ -1,0 +1,46 @@
+name: Building Version 3.2.1-fsvsifi for ARM and x86
+
+# Controls when the workflow will run
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: v3.2.1  
+      -
+       name: Set up QEMU
+       uses: docker/setup-qemu-action@v1
+      -
+        name: Build and push frontend
+        id: docker_build_frontend
+        uses: docker/build-push-action@v2
+        with:
+          push: false
+          tags: |
+            fius/rallly:latest-fsvsifi
+            fius/rallly:v3.2.1-fsvsifi
+          file: apps/web/Dockerfile.fsvsifi
+#          context: ./apps/web
+#          platforms: linux/amd64,linux/arm64/v8
+          platforms: linux/amd64
+          build-args: SELF_HOSTED=true
