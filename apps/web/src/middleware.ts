@@ -3,10 +3,12 @@ import languageParser from "accept-language-parser";
 import { NextResponse } from "next/server";
 import withAuth from "next-auth/middleware";
 
+import { initGuest } from "@/app/guest";
+
 const supportedLocales = Object.keys(languages);
 
-export default withAuth(
-  function middleware(req) {
+export const middleware = withAuth(
+  async function middleware(req) {
     const { headers, nextUrl } = req;
     const newUrl = nextUrl.clone();
 
@@ -26,35 +28,17 @@ export default withAuth(
     } else {
       // Check if locale is specified in header
       const acceptLanguageHeader = headers.get("accept-language");
+      const localeFromHeader = acceptLanguageHeader
+        ? languageParser.pick(supportedLocales, acceptLanguageHeader)
+        : null;
+      const locale = localeFromHeader ?? "en";
 
-      if (acceptLanguageHeader) {
-        const locale = languageParser.pick(
-          supportedLocales,
-          acceptLanguageHeader,
-        );
-
-        if (locale) {
-          newUrl.pathname = `/${locale}${newUrl.pathname}`;
-        }
-      }
+      newUrl.pathname = `/${locale}${newUrl.pathname}`;
     }
 
     const res = NextResponse.rewrite(newUrl);
 
-    /**
-     * We moved from a bespoke session implementation to next-auth.
-     * This middleware looks for the old session cookie and moves it to
-     * a temporary cookie accessible to the client which will exchange it
-     * for a new session token with the legacy-token provider.
-     */
-    const legacyToken = req.cookies.get("rallly-session");
-    if (legacyToken) {
-      res.cookies.set({
-        name: "legacy-token",
-        value: legacyToken.value,
-      });
-      res.cookies.delete("rallly-session");
-    }
+    await initGuest(req, res);
 
     return res;
   },

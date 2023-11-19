@@ -1,3 +1,6 @@
+import { cn } from "@rallly/ui";
+import { Button } from "@rallly/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@rallly/ui/tooltip";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -5,10 +8,7 @@ import {
   PlusIcon,
   ShrinkIcon,
   Users2Icon,
-} from "@rallly/icons";
-import { cn } from "@rallly/ui";
-import { Button } from "@rallly/ui/button";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@rallly/ui/tooltip";
+} from "lucide-react";
 import { Trans, useTranslation } from "next-i18next";
 import * as React from "react";
 import { RemoveScroll } from "react-remove-scroll";
@@ -222,7 +222,7 @@ const DesktopPoll: React.FunctionComponent = () => {
               ) : null}
             </div>
           </div>
-          {poll.options[0].duration !== 0 && poll.timeZone ? (
+          {poll.options[0]?.duration !== 0 && poll.timeZone ? (
             <div className="border-b bg-gray-50 p-3">
               <TimesShownIn />
             </div>

@@ -1,3 +1,12 @@
+import { Button } from "@rallly/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@rallly/ui/dropdown-menu";
 import {
   ChevronDown,
   CreditCardIcon,
@@ -11,18 +20,8 @@ import {
   Settings2Icon,
   UserIcon,
   UserPlusIcon,
-} from "@rallly/icons";
-import { Button } from "@rallly/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@rallly/ui/dropdown-menu";
+} from "lucide-react";
 import Link from "next/link";
-import { signOut } from "next-auth/react";
 
 import { LoginLink } from "@/components/login-link";
 import { RegisterLink } from "@/components/register-link";
@@ -38,7 +37,11 @@ export const UserDropdown = () => {
   const { user } = useUser();
   return (
     <DropdownMenu modal={false}>
-      <DropdownMenuTrigger data-testid="user-dropdown" asChild className="group">
+      <DropdownMenuTrigger
+        data-testid="user-dropdown"
+        asChild
+        className="group"
+      >
         <Button variant="ghost" className="rounded-full">
           <CurrentUserAvatar size="sm" className="-ml-1" />
           <ChevronDown className="h-4 w-4" />
@@ -143,25 +146,25 @@ export const UserDropdown = () => {
               <Trans i18nKey="createAnAccount" defaults="Register" />
             </RegisterLink>
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="flex items-center gap-x-2"
-            onSelect={() =>
-              signOut({
-                redirect: false,
-              })
-            }
+            asChild
+            className="flex text-destructive items-center gap-x-2"
           >
-            <RefreshCcwIcon className="h-4 w-4" />
-            <Trans i18nKey="forgetMe" />
+            {/* Don't use signOut() from next-auth. It doesn't work in vercel-production env. I don't know why. */}
+            <a href="/logout">
+              <RefreshCcwIcon className="h-4 w-4" />
+              <Trans i18nKey="forgetMe" />
+            </a>
           </DropdownMenuItem>
         </IfGuest>
         <IfAuthenticated>
-          <DropdownMenuItem
-            className="flex items-center gap-x-2"
-            onSelect={() => signOut()}
-          >
-            <LogOutIcon className="h-4 w-4" />
-            <Trans i18nKey="logout" />
+          <DropdownMenuItem asChild className="flex items-center gap-x-2">
+            {/* Don't use signOut() from next-auth. It doesn't work in vercel-production env. I don't know why. */}
+            <a href="/logout">
+              <LogOutIcon className="h-4 w-4" />
+              <Trans i18nKey="logout" />
+            </a>
           </DropdownMenuItem>
         </IfAuthenticated>
       </DropdownMenuContent>

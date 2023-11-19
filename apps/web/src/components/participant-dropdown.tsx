@@ -1,4 +1,3 @@
-import { PencilIcon, TagIcon, TrashIcon } from "@rallly/icons";
 import { Button } from "@rallly/ui/button";
 import {
   Dialog,
@@ -27,6 +26,7 @@ import {
   FormMessage,
 } from "@rallly/ui/form";
 import { Input } from "@rallly/ui/input";
+import { PencilIcon, TagIcon, TrashIcon } from "lucide-react";
 import { useTranslation } from "next-i18next";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -180,7 +180,7 @@ const ChangeNameModal = (props: {
   onOpenChange: (open: boolean) => void;
 }) => {
   const posthog = usePostHog();
-  const queryClient = trpc.useContext();
+  const queryClient = trpc.useUtils();
   const changeName = trpc.polls.participants.rename.useMutation({
     onSuccess: (_, { participantId, newName }) => {
       queryClient.polls.participants.invalidate();

@@ -1,14 +1,12 @@
-import Cookies from "js-cookie";
+"use client";
 import { Session } from "next-auth";
-import { signIn, useSession } from "next-auth/react";
-import { useTranslation } from "next-i18next";
+import { useSession } from "next-auth/react";
 import React from "react";
 import { z } from "zod";
 
+import { useTranslation } from "@/app/i18n/client";
 import { PostHogProvider } from "@/contexts/posthog";
 import { PreferencesProvider } from "@/contexts/preferences";
-import { isSelfHosted } from "@/utils/constants";
-import { trpc } from "@/utils/trpc/client";
 
 import { useRequiredContext } from "./use-required-context";
 
@@ -66,30 +64,7 @@ export const UserProvider = (props: { children?: React.ReactNode }) => {
 
   const { t } = useTranslation();
 
-  React.useEffect(() => {
-    if (session.status === "unauthenticated") {
-      // Begin: Legacy token migration
-      const legacyToken = Cookies.get("legacy-token");
-      // It's important to remove the token from the cookies,
-      // otherwise when the user signs out.
-      if (legacyToken) {
-        Cookies.remove("legacy-token");
-        signIn("legacy-token", {
-          token: legacyToken,
-        });
-        return;
-      }
-      // End: Legacy token migration
-      signIn("guest");
-    }
-  }, [session.status]);
-
-  // TODO (Luke Vella) [2023-09-19]: Remove this when we have a better way to query for an active subscription
-  trpc.user.subscription.useQuery(undefined, {
-    enabled: !isSelfHosted,
-  });
-
-  if (!user || !session.data) {
+  if (!user) {
     return null;
   }
 

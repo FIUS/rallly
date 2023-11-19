@@ -4,17 +4,17 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 const { withSentryConfig } = require("@sentry/nextjs");
-const i18n = require("./i18n.config.js");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  i18n: { ...i18n, localeDetection: false },
-  productionBrowserSourceMaps: true,
   output: "standalone",
+  productionBrowserSourceMaps: true,
   transpilePackages: [
     "@rallly/backend",
+    "@rallly/database",
     "@rallly/icons",
     "@rallly/ui",
     "@rallly/tailwind-config",
@@ -22,11 +22,13 @@ const nextConfig = {
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
-      issuer: /\.[jt]sx?$/,
       use: ["@svgr/webpack"],
     });
 
     return config;
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
@@ -61,6 +63,7 @@ const sentryWebpackPluginOptions = {
   // recommended:
   //   release, url, org, project, authToken, configFile, stripPrefix,
   //   urlPrefix, include, ignore
+  authToken: process.env.SENTRY_AUTH_TOKEN,
   dryRun: !process.env.SENTRY_AUTH_TOKEN,
   silent: true, // Suppresses all logs
   // For all available options, see:
@@ -69,6 +72,6 @@ const sentryWebpackPluginOptions = {
 
 // Make sure adding Sentry options is the last code to run before exporting, to
 // ensure that your source maps include changes from all other Webpack plugins
-module.exports = withBundleAnalyzer(
-  withSentryConfig(nextConfig, sentryWebpackPluginOptions),
+module.exports = withSentryConfig(
+  withBundleAnalyzer(nextConfig, sentryWebpackPluginOptions),
 );

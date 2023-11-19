@@ -8,18 +8,16 @@ import { NextPage } from "next";
 import { AppProps } from "next/app";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import Script from "next/script";
 import { SessionProvider, signIn, useSession } from "next-auth/react";
-import { appWithTranslation } from "next-i18next";
 import { DefaultSeo } from "next-seo";
 import React from "react";
 
+import { I18nProvider } from "@/app/i18n/client";
 import Maintenance from "@/components/maintenance";
 import { UserProvider } from "@/components/user-provider";
 import { ConnectedDayjsProvider } from "@/utils/dayjs";
 import { trpc } from "@/utils/trpc/client";
 
-import * as nextI18nNextConfig from "../../next-i18next.config.js";
 import { NextPageWithLayout } from "../types";
 import { absoluteUrl } from "../utils/absolute-url";
 
@@ -85,38 +83,27 @@ const MyApp: NextPage<AppPropsWithLayout> = ({ Component, pageProps }) => {
             content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=yes"
           />
         </Head>
-        {process.env.NEXT_PUBLIC_PADDLE_VENDOR_ID ? (
-          <Script
-            src="https://cdn.paddle.com/paddle/paddle.js"
-            onLoad={() => {
-              if (process.env.NEXT_PUBLIC_PADDLE_SANDBOX === "true") {
-                window.Paddle.Environment.set("sandbox");
-              }
-              window.Paddle.Setup({
-                vendor: Number(process.env.NEXT_PUBLIC_PADDLE_VENDOR_ID),
-              });
-            }}
-          />
-        ) : null}
         <style jsx global>{`
           html {
             --font-inter: ${inter.style.fontFamily};
           }
         `}</style>
-        <TooltipProvider delayDuration={200}>
-          <UserProvider>
-            <ConnectedDayjsProvider>
-              {Component.isAuthRequired ? (
-                <Auth>{getLayout(children)}</Auth>
-              ) : (
-                getLayout(children)
-              )}
-            </ConnectedDayjsProvider>
-          </UserProvider>
-        </TooltipProvider>
+        <I18nProvider>
+          <TooltipProvider delayDuration={200}>
+            <UserProvider>
+              <ConnectedDayjsProvider>
+                {Component.isAuthRequired ? (
+                  <Auth>{getLayout(children)}</Auth>
+                ) : (
+                  getLayout(children)
+                )}
+              </ConnectedDayjsProvider>
+            </UserProvider>
+          </TooltipProvider>
+        </I18nProvider>
       </LazyMotion>
     </SessionProvider>
   );
 };
 
-export default trpc.withTRPC(appWithTranslation(MyApp, nextI18nNextConfig));
+export default trpc.withTRPC(MyApp);

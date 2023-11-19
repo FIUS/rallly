@@ -179,6 +179,7 @@ export const polls = router({
         await prisma.option.createMany({
           data: input.optionsToAdd.map((optionValue) => {
             const [start, end] = optionValue.split("/");
+
             if (end) {
               return {
                 start: new Date(`${start}Z`),

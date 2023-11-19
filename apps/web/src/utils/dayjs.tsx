@@ -11,7 +11,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import timezone from "dayjs/plugin/timezone";
 import updateLocale from "dayjs/plugin/updateLocale";
 import utc from "dayjs/plugin/utc";
-import { useRouter } from "next/router";
+import { useParams } from "next/navigation";
 import * as React from "react";
 import { useAsync } from "react-use";
 
@@ -28,6 +28,11 @@ const dayjsLocales: Record<
     import: () => Promise<ILocale>;
   }
 > = {
+  eu: {
+    weekStart: 1,
+    timeFormat: "hours24",
+    import: () => import("dayjs/locale/eu"),
+  },
   en: {
     weekStart: 1,
     timeFormat: "hours12",
@@ -189,8 +194,8 @@ export const DayjsProvider: React.FunctionComponent<{
     };
   };
 }> = ({ config, children }) => {
-  const router = useRouter();
-  const l = config?.locale ?? router.locale ?? "en";
+  const locale = useParams()?.locale as string;
+  const l = config?.locale ?? locale ?? "en";
   const state = useAsync(async () => {
     return await dayjsLocales[l].import();
   }, [l]);
