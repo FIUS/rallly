@@ -26,7 +26,7 @@ jobs:
         name: Checkout
         uses: actions/checkout@v2
         with:
-          ref: v3.2.1  
+          ref: v3.3.0  
       -
        name: Set up QEMU
        uses: docker/setup-qemu-action@v1
@@ -38,7 +38,7 @@ jobs:
           push: true
           tags: |
             fius/rallly:dev
-            fius/rallly:v3.2.1
+            fius/rallly:v3.3.0
           file: apps/web/Dockerfile
 #          context: ./apps/web
           platforms: linux/amd64,linux/arm64/v8
